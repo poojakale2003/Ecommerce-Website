@@ -1,58 +1,50 @@
+const Feature = require("../../models/feature");
 
-const Feature = require('../../models/feature')
+const addFeatureImage = async (req, res) => {
+  try {
+    const { image } = req.body;
 
-const addFeatureImage = async(req, res)=>{
-    try{
+    console.log(image);
 
-        const {image} = req.body;
+    const featureImages = new Feature({
+      image,
+    });
 
-        console.log(image);
+    await featureImages.save();
 
-        const featureImages =new Feature({
-            image
-        })
+    res.status(201).json({
+      success: true,
+      data: featureImages,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Error",
+    });
+  }
+};
 
-        await featureImages.save();
+const getFeatureImages = async (req, res) => {
+  try {
+    const images = await Feature.find({});
 
-        res.status(201).json({
-            success: true,
-            data: featureImages
-        })
+    res.status(200).json({
+      success: true,
+      data: images,
+    });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Error",
+    });
+  }
+};
 
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            success: false,
-            message: 'Error'
-        })
-
-    }
-}
-
-const getFeatureImages = async(req, res)=>{
-    try{
-
-        const images = await Feature.find({})
-
-        res.status(200).json({
-            success: true,
-            data: images
-        })
-
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            success: false,
-            message: 'Error'
-        })
-
-    }
-}
-
-const deleteFeatureImage = async(req, res)=>{
-    try{
-
-        const { image } = req.body;
+const deleteFeatureImage = async (req, res) => {
+  try {
+    const { image } = req.body;
 
     const deletedImage = await Feature.findOneAndDelete({ image });
 
@@ -67,16 +59,13 @@ const deleteFeatureImage = async(req, res)=>{
       success: true,
       message: "Feature Image deleted successfully",
     });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({
+      success: false,
+      message: "Error",
+    });
+  }
+};
 
-    }catch(e){
-        console.log(e);
-        res.status(500).json({
-            success: false,
-            message: 'Error'
-        })
-
-    }
-}
-
-module.exports = {addFeatureImage, getFeatureImages, deleteFeatureImage}
-
+module.exports = { addFeatureImage, getFeatureImages, deleteFeatureImage };
