@@ -64,7 +64,3 @@ Server:
 ```sh
 cd server
 npm start
-
-
-
-
